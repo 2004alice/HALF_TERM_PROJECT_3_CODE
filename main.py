@@ -10,56 +10,77 @@ FPSCLOCK = pygame.time.Clock()
 
 black = (0, 0, 0)
 white = (255, 255, 255)
-left = 30
+red = (255, 0, 0)
+green = (0, 255, 0)
+purple = (90, 0, 90)
+'''left = 30
 top = 30
 width = 30
-height = 30
+height = 30'''
 x_speed = 5
 y_speed = 5
 
 
 class MainCharacter(pygame.sprite.Sprite):
 
-    def __init__(self, width, height, health):
+    def __init__(self):
         super().__init__()
-        self.image = pygame.Surface([width, height])
+        self.image = pygame.Surface([30, 30])
+        pygame.draw.rect(DISPLAY, green, (30, 30, 30, 30))
         self.rect = self.image.get_rect()
-        self.max_health = health
-        self.max_health = None
-        self.attack_damage = None
+        self.max_health = 10
+        self.attack_damage = 2
+        self.move_speed = 30
+        self.name = MainCharacter
+        self.current_health = 10
+
+    def move_right(self, pixels):
+        self.rect.x += pixels
+
+    def move_left(self, pixels):
+        self.rect.x -= pixels
+
+
+class Enemy(pygame.sprite.Sprite):
+
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface([30, 30])
+        pygame.draw.rect(DISPLAY, red, (100, 100, 30, 30))
+        self.rect = self.image.get_rect()
+        self.health = 6
+        self.move_speed = 20
+
+
+class Attack(pygame.sprite.Sprite):
+
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface([30, 30])
+        pygame.draw.rect(DISPLAY, purple, (200, 200, 35, 10))
+        self.rect = self.image.get_rect()
+        self.damage = 2
+        self.mode = "melee"
+        self.count = None
         self.move_speed = None
-        self.name = None
-        self.current_health = None
-
-    def health(self):
-        max_health = 3
-        if left + width >= WINDOWWIDTH:
-            max_health = - 1
-        elif top + height >= WINDOWHEIGHT:
-            max_health = - 1
-
-        if max_health == 0:
-            quit()
+        self.direction = None
 
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             quit()
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            MainCharacter.move_left(self, 5)
+        if keys[pygame.K_RIGHT]:
+            MainCharacter.move_right(self, 5)
     DISPLAY.fill((0, 0, 0))
-    pygame.draw.rect(DISPLAY, white, (left, top, width, height))
 
-    left += x_speed
-    if left + width >= WINDOWWIDTH:
-        x_speed *= -1
-    if left <= 0:
-        x_speed *= -1
-
-    top += y_speed
-    if top + height >= WINDOWHEIGHT:
-        y_speed *= -1
-    if top <= 0:
-        y_speed *= -1
+    MainCharacter()
+    Enemy()
+    Attack()
 
     pygame.display.update()
     FPSCLOCK.tick(20)
