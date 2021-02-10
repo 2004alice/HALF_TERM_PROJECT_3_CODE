@@ -1,3 +1,4 @@
+
 import pygame
 
 pygame.init()
@@ -26,7 +27,7 @@ class MainCharacter(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.Surface([30, 30])
-        pygame.draw.rect(DISPLAY, green, (30, 30, 30, 30))
+        pygame.draw.rect(self.image, green, (0, 0, 30, 30))
         self.rect = self.image.get_rect()
         self.max_health = 10
         self.attack_damage = 2
@@ -66,6 +67,10 @@ class Attack(pygame.sprite.Sprite):
         self.direction = None
 
 
+me = MainCharacter()
+me_group = pygame.sprite.Group()
+me_group.add(me)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -73,14 +78,13 @@ while True:
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            MainCharacter.move_left(self, 5)
+            me.move_left(5)
         if keys[pygame.K_RIGHT]:
-            MainCharacter.move_right(self, 5)
+            me.move_right(5)
     DISPLAY.fill((0, 0, 0))
+    me_group.update()
+    me_group.draw(DISPLAY)
 
-    MainCharacter()
-    Enemy()
-    Attack()
 
     pygame.display.update()
     FPSCLOCK.tick(20)
